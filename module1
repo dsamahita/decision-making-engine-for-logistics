@@ -70,3 +70,73 @@ void mergeSort(vector<Delivery>& arr, int l, int r) {
         merge(arr, l, m, r);
     }
 }
+
+2. Quick Sort (Priority-Based Ranking)
+ Purpose:
+
+Sort deliveries by highest customer priority first
+
+🔧 Implementation:
+int partition(vector<Delivery>& arr, int low, int high) {
+    int pivot = arr[high].priority;
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j].priority > pivot) { // higher priority first
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(vector<Delivery>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+
+3. Heap (Priority Queue – Dynamic Scheduling)
+ Purpose:
+
+Handle real-time incoming deliveries
+
+Implementation:
+#include <queue>
+
+struct Compare {
+    bool operator()(Delivery a, Delivery b) {
+        return a.priority < b.priority; // max heap
+    }
+};
+
+priority_queue<Delivery, vector<Delivery>, Compare> pq;
+Usage:
+pq.push({1, 10, 5, 3, 20});
+pq.push({2, 5, 2, 5, 15});
+
+while (!pq.empty()) {
+    Delivery d = pq.top();
+    pq.pop();
+    cout << d.id << " ";
+}
+
+“Heap is used for dynamic prioritization where new delivery requests arrive in real time.”
+
+SAMPLE OUTPUT
+After Merge Sort (by deadline):
+ID 2 → Deadline 1
+ID 1 → Deadline 3
+ID 3 → Deadline 5
+
+After Quick Sort (by priority):
+ID 3 → Priority 5
+ID 1 → Priority 3
+ID 2 → Priority 1
+
+Heap Output (dynamic):
+3 1 2
