@@ -125,3 +125,19 @@ Reachable nodes:
 🧠 FINAL VIVA EXPLANATION
 
 “This module models the logistics network as a weighted graph. Dijkstra’s algorithm is used for efficient route optimization, Bellman-Ford handles dynamic or negative weights, MST minimizes network cost, and BFS ensures connectivity. Together, these algorithms enable optimal and reliable delivery routing.”
+
+“Greedy fails in 0/1 knapsack because local optimal choices do not guarantee global optimal solutions. That’s why we use Dynamic Programming in Module 4.”
+
+📊 COMPLEXITY OF MODULE 3 
+Algorithm	Time Complexity
+Activity Selection	O(n log n)
+Fractional Knapsack	O(n log n)
+Job Scheduling	O(n²)
+🔁 REAL-WORLD EXECUTION FLOW
+Sorted deliveries come from Module 1
+System assigns deliveries to vehicles:
+Max deliveries → Activity Selection
+Max value → Knapsack
+Max profit → Job Scheduling
+Selected deliveries → sent to routing (Module 2)
+“This module uses greedy algorithms to assign deliveries efficiently. Activity selection maximizes the number of deliveries, fractional knapsack maximizes value per vehicle, and job scheduling ensures high-profit deliveries are prioritized. However, greedy approaches may fail in some cases, which is addressed using dynamic programming in the next module.”
