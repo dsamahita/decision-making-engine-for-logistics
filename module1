@@ -1,0 +1,72 @@
+MODULE 1: DELIVERY PRIORITIZATION ENGINE
+Objective
+
+To efficiently sort and prioritize delivery requests based on multiple parameters like:
+
+Deadline
+Customer priority
+Distance
+Weight
+
+So that:
+
+Urgent deliveries are handled first
+High-value customers are prioritized
+Overall system efficiency improves
+
+Input Structure
+
+Each delivery request contains:
+
+struct Delivery {
+    int id;
+    int weight;
+    int deadline;
+    int priority;
+    int distance;
+};
+ DESIGN APPROACH
+
+We use three different sorting strategies, each solving a specific real-world need:
+
+ 1. Merge Sort (Deadline-Based Sorting)
+ Purpose:
+
+Sort deliveries by earliest deadline first
+
+ Why Merge Sort?
+Stable sorting → maintains fairness
+Time complexity = O(n log n)
+Good for large datasets
+ Implementation:
+void merge(vector<Delivery>& arr, int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    vector<Delivery> L(n1), R(n2);
+
+    for (int i = 0; i < n1; i++) L[i] = arr[l + i];
+    for (int j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+
+    int i = 0, j = 0, k = l;
+
+    while (i < n1 && j < n2) {
+        if (L[i].deadline <= R[j].deadline) {
+            arr[k++] = L[i++];
+        } else {
+            arr[k++] = R[j++];
+        }
+    }
+
+    while (i < n1) arr[k++] = L[i++];
+    while (j < n2) arr[k++] = R[j++];
+}
+
+void mergeSort(vector<Delivery>& arr, int l, int r) {
+    if (l < r) {
+        int m = (l + r) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
+}
