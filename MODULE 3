@@ -1,0 +1,141 @@
+MODULE 3: VEHICLE ASSIGNMENT (GREEDY ALGORITHMS)
+🎯 Objective
+
+Efficiently assign delivery requests to vehicles such that:
+
+Maximum number of deliveries are completed
+Vehicle capacity is not exceeded
+High-value deliveries are prioritized
+Decisions are made quickly (real-time)
+🚚 Real-World Interpretation
+
+You have:
+
+Multiple vehicles (limited capacity)
+Multiple packages (different weights, deadlines, priorities)
+
+👉 Problem:
+
+“Which packages should go in which vehicle?”
+
+⚙️ DESIGN STRATEGY
+
+We use Greedy Algorithms because:
+
+Fast decisions required
+Works well in real-time logistics
+Gives near-optimal solutions
+🔸 1. Activity Selection (Max Deliveries)
+✅ Idea:
+
+Select maximum deliveries without deadline conflict
+
+🔧 Approach:
+Sort deliveries by earliest deadline
+Pick delivery if it fits schedule
+Code:
+bool compareDeadline(Delivery a, Delivery b) {
+    return a.deadline < b.deadline;
+}
+
+void activitySelection(vector<Delivery>& arr) {
+    sort(arr.begin(), arr.end(), compareDeadline);
+
+    int last = -1;
+
+    cout << "Selected Deliveries:\n";
+
+    for (auto d : arr) {
+        if (d.deadline > last) {
+            cout << d.id << " ";
+            last = d.deadline;
+        }
+    }
+}
+🧠 Viva Line:
+
+“Activity selection maximizes the number of deliveries completed within deadlines.”
+
+🔸 2. Fractional Knapsack (Max Value per Trip)
+✅ Idea:
+
+Maximize total delivery value within vehicle capacity
+
+👉 You can take partial deliveries (theoretical case)
+
+🔧 Code:
+struct Item {
+    int value, weight;
+};
+
+bool compareRatio(Item a, Item b) {
+    return (double)a.value/a.weight > (double)b.value/b.weight;
+}
+
+double fractionalKnapsack(int W, vector<Item>& items) {
+    sort(items.begin(), items.end(), compareRatio);
+
+    double totalValue = 0.0;
+
+    for (auto item : items) {
+        if (W >= item.weight) {
+            totalValue += item.value;
+            W -= item.weight;
+        } else {
+            totalValue += item.value * ((double)W / item.weight);
+            break;
+        }
+    }
+
+    return totalValue;
+}
+🧠 Viva Line:
+
+“Fractional knapsack maximizes profit per vehicle by selecting highest value-to-weight deliveries first.”
+
+🔸 3. Job Scheduling with Deadlines
+✅ Idea:
+
+Maximize profit while meeting deadlines
+
+🔧 Code:
+struct Job {
+    int id, deadline, profit;
+};
+
+bool compareProfit(Job a, Job b) {
+    return a.profit > b.profit;
+}
+
+void jobScheduling(vector<Job>& jobs) {
+    sort(jobs.begin(), jobs.end(), compareProfit);
+
+    int n = jobs.size();
+    vector<int> slot(n, -1);
+
+    int totalProfit = 0;
+
+    for (auto job : jobs) {
+        for (int j = job.deadline - 1; j >= 0; j--) {
+            if (slot[j] == -1) {
+                slot[j] = job.id;
+                totalProfit += job.profit;
+                break;
+            }
+        }
+    }
+
+    cout << "Total Profit: " << totalProfit << endl;
+}
+🧠 Viva Line:
+
+“Job scheduling ensures high-profit deliveries are completed before their deadlines.”
+OP:
+Selected Deliveries:
+1 3 5
+
+Max Value in Vehicle:
+240
+
+Total Profit:
+350
